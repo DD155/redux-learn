@@ -1,4 +1,9 @@
 const redux = require('redux')
+const produce = require('immer').produce
+const reduxLogger = require('redux-logger')
+
+const logger = reduxLogger.createLogger()
+const applyMiddleware = redux.applyMiddleware
 const configureStore = redux.configureStore
 const bindActionCreators = redux.bindActionCreators
 const combineReducers = redux.combineReducers
@@ -69,10 +74,13 @@ to create a copy of the object
 const iceCreamReducer = (state = initialIceCreamState, action) => {
     switch (action.type) {
         case IC_ORDERED:
-            return {
-                ...state,
-                numOfIceCream: state.numOfIceCream - 1
-            }
+            // return {
+            //     ...state,
+            //     numOfIceCream: state.numOfIceCream - 1
+            // }
+            return produce(state, (draft) => {
+                draft.numOfIceCream = state.numOfIceCream - 1
+            })
         case IC_RESTOCKED:
             return {
                 ...state,
@@ -107,12 +115,11 @@ const rootReducer = combineReducers({
 })
 
 // create the redux store using the reducer as its argument
-const store = redux.legacy_createStore(rootReducer)
-console.log(`Initial state ${store.getState().numOfCakes}`)
+const store = redux.legacy_createStore(rootReducer, applyMiddleware(logger))
+console.log(`Initial state ${store.getState()}`)
 
 
-const unsubscribe = store.subscribe(() =>
-    console.log('update state ', store.getState()))
+const unsubscribe = store.subscribe(() => {})
 
 // store.dispatch(orderCake())
 // store.dispatch(restockCake(3))
