@@ -1,17 +1,20 @@
 const store = require('./app/store')
 const cakeActions = require('./features/cake/cakeSlice').cakeActions
 const iceCreamActions = require('./features/icecream/iceCreamSlice').iceCreamActions
+const fetchUsers = require('./features/user/userSlice').fetchUsers
 
 console.log('Inital state ', store.getState())
-const unsubscribe = store.subscribe(() => {})
+store.dispatch(fetchUsers())
 
-store.dispatch(cakeActions.ordered())
-store.dispatch(cakeActions.restocked(1))
-store.dispatch(iceCreamActions.ordered(5))
-store.dispatch(iceCreamActions.ordered())
-store.dispatch(iceCreamActions.restocked(6))
+// const unsubscribe = store.subscribe(() => {})
 
-unsubscribe()
+// store.dispatch(cakeActions.ordered())
+// store.dispatch(cakeActions.restocked(1))
+// store.dispatch(iceCreamActions.ordered(5))
+// store.dispatch(iceCreamActions.ordered())
+// store.dispatch(iceCreamActions.restocked(6))
+
+// unsubscribe()
 
 /*
 Redux toolkit pattern:
